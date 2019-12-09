@@ -100,10 +100,23 @@ class KanbanBoard extends React.Component {
 		//pegar o valor do column
 		//atualiza no state 
 		console.log("desc do projeto jogado", project);
+		console.log(project.project_stage != this.state.draggedOverCol);
 		console.log("nome da coluna que ele jogou " + this.state.draggedOverCol);
-		const updatedProjects = this.state.projects.slice(0);
-		updatedProjects.find((projectObject) => { return projectObject.name === project.name; }).project_stage = this.state.draggedOverCol;
-		this.setState({ projects: updatedProjects });
+		if( project.project_stage != this.state.draggedOverCol)
+		{
+			//alert('estava na '+project.project_stage)
+			//alert('projeto'+project.id)
+			//alert('estou querendo ir para ' + this.state.draggedOverCol);
+			const project_stage = { project_stage: this.state.draggedOverCol }
+			axios.put('http://127.0.0.1:3000/api/tasks/'+ project.id, project_stage)
+				.then(res => console.log(res.data));
+
+				const updatedProjects = this.state.projects.slice(0);
+				updatedProjects.find((projectObject) => { return projectObject.name === project.name; }).project_stage = this.state.draggedOverCol;
+				this.setState({ projects: updatedProjects });
+		}
+	
+	
 	}
 
 	render() {
@@ -135,19 +148,19 @@ class KanbanColumn extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = ({ mouseIsHovering: false, name: '', description: '', project_stage: '1' });
-		this.handleChange = this.handleChange.bind(this);
-		this.handleChange2 = this.handleChange2.bind(this);
+		this.handleNameChange = this.handleNameChange.bind(this);
+		this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		this.state = ({ mouseIsHovering: false });
 	}
 
-	handleChange(event) {
+	handleNameChange(event) {
 		this.setState({ name: event.target.value });
 	}
 
-	handleChange2(event) {
+	handleDescriptionChange(event) {
 		this.setState({ description: event.target.value });
 	}
 
@@ -163,9 +176,7 @@ class KanbanColumn extends React.Component {
 			.then(res => console.log(res.data));
 
 		console.log(task);
-		//console.log(someParameter);
-		//console.log(this.state.name);
-		//console.log(this.state.description);
+		window.location.reload();
 	}
 
 	generateKanbanCards() {
@@ -213,8 +224,8 @@ class KanbanColumn extends React.Component {
 			>
 				<h4>{this.props.stage}. {this.props.name} ({this.props.projects.length})</h4>
 				<button onClick={(e) => { this.addTask(e, this.props.stage) }}>Add</button><br />
-				<input id="1" value={this.state.name} onChange={this.handleChange} type="text" placeholder="name"></input>
-				<input id="2" value={this.state.description} onChange={this.handleChange2} type="text" placeholder="description"></input>
+				<input  value={this.state.name} onChange={this.handleNameChange} type="text" placeholder="name"></input>
+				<input  value={this.state.description} onChange={this.handleDescriptionChange} type="text" placeholder="description"></input>
 
 				{this.generateKanbanCards()}
 				<br />
@@ -229,20 +240,38 @@ class KanbanCard extends React.Component {
 		super(props);
 		this.state = {
 			collapsed: true,
+			showMe: false
 		};
+
+		this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
 	}
 
-	update() {
+	handleDescriptionChange(event) {
+		this.setState({ description: event.target.value });
+	}
+
+
+	update(e, data) {
+
+		//axios.put('http://127.0.0.1:3000/api/tasks/'+ data.id, data)
+		//	.then(res => console.log(res.data));
+
+
 		//tem que dar update da descricao
 		//e atualizar no dom 
+		console.log(data.id);
+		console.log(data);
 		alert('update!');
-
+	//	window.location.reload();
 	}
-	delete() {
-		//tem que receber o id
-		//deletar no banco 
-		//atualizar dom 
-		alert('delete!');
+
+
+	delete(event, task) {
+		axios.delete('http://127.0.0.1:3000/api/tasks/'+ task.id )
+			.then(res => console.log(res.data));
+
+		console.log(task.id);
+		window.location.reload();
 
 	}
 
@@ -266,15 +295,24 @@ class KanbanCard extends React.Component {
 				draggable={true}
 				onDragEnd={(e) => { this.props.onDragEnd(e, this.props.project); }}
 			>
-				<button onClick={this.update}>Editar</button>
 				<br />
-				<button onClick={this.delete}>Excluir</button>
-
-
+				<button onClick={(e) => { this.delete(e, this.props.project) }}>Remove</button>
+		
 				<div><h4>{this.props.project.name}</h4></div>
-				{(this.state.collapsed)
-					? null
-					: (<div><strong>Description: </strong>{this.props.project.description}<br /></div>)
+				{(this.state.collapsed) ? null: 
+				(<div><strong>Description: </strong><br />
+					
+				<textarea 
+				type="text" 
+				name="payloadBox" 
+				placeholder="Enter payload here..."
+				onChange={this.handleDescriptionChange}
+				value={ this.props.project.description } 
+				/>
+	  			<br/>	
+	  			<button onClick={(e) => { this.update(e, this.props.project) }}>Update description</button>
+				</div>
+					)
 				}
 				<div
 					style={{ 'width': '100%' }}
