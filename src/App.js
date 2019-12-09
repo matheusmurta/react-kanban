@@ -1,13 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Board from './component/board';
-import Kanban from './component/kanban';
+
+import RouterComponent from './routes' 
 
 function App() {
 
 	return (
-		<Kanban />
+		<RouterComponent />
 	);
 }
 
