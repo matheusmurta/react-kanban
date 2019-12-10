@@ -31,10 +31,13 @@ export class KanbanColumn extends React.Component {
 			description: this.state.description,
 			project_stage: column,
 		}
-		axios.post('http://127.0.0.1:3000/api/boards/1/tasks', task)
-			.then(res => console.log(res.data));
 
-		console.log(task);
+		let  url = window.location.pathname;
+		let  id = url.substring(url.lastIndexOf('/') + 1);
+
+		axios.post('http://127.0.0.1:3000/api/boards/'+  id +'/tasks', task)
+			.then(res => console.log(res.data));
+		
 		window.location.reload();
 	}
 
@@ -82,12 +85,13 @@ export class KanbanColumn extends React.Component {
 				onDragExit={(e) => { this.setState({ mouseIsHovering: false }); }}
 			>
 				<h4>{this.props.stage}. {this.props.name} ({this.props.projects.length})</h4>
-				<button onClick={(e) => { this.addTask(e, this.props.stage) }}>Add</button><br />
-				<input  value={this.state.name} onChange={this.handleNameChange} type="text" placeholder="name"></input>
-				<input  value={this.state.description} onChange={this.handleDescriptionChange} type="text" placeholder="description"></input>
+				
 
 				{this.generateKanbanCards()}
 				<br />
+				<button onClick={(e) => { this.addTask(e, this.props.stage) }}>Add</button><br />
+				<input  value={this.state.name} onChange={this.handleNameChange} type="text" placeholder="name"></input>
+				<input  value={this.state.description} onChange={this.handleDescriptionChange} type="text" placeholder="description"></input>
 			</div>
 		);
 	}

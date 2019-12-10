@@ -32,7 +32,6 @@ export class KanbanBoard  extends React.Component  {
 		axios.get('http://127.0.0.1:3000/api/tasks/listbyboard/'+ this.state.boardID )
 			.then(res => {
 				this.setState({ projects: res.data, isLoading: false });
-
 			})
 			.catch(error => {
 				console.log(error);

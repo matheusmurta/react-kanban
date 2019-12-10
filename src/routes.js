@@ -35,7 +35,8 @@ export class RouterComponent extends React.Component {
       const viewStyle = {
         'margin-left': '130px',
         'padding': '0px 10px',
-        'height': '100%'
+        'height': '100%',
+        'background-color': 'rgb(228, 241, 254)'
       }
 
         return (  

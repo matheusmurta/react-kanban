@@ -8,13 +8,13 @@ import {
 
 export class Board extends React.Component {
 
-
 	constructor(props) {
 		super(props);
 		this.state = ({
 			boards: [],
-			electedOption: 'None',
-			boardName: ''
+			selectedOption: '',
+			boardName: '',
+			selectedOptionText:''
 		});
 		this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
 
@@ -26,13 +26,10 @@ export class Board extends React.Component {
 			name: this.state.boardName,
 		}
 
-		console.log(board);
 		axios.post('http://127.0.0.1:3000/api/boards/', board)
 			.then(res => console.log(res.data));
-
-		console.log(board);
-		window.location.reload();
 		alert('salvo com sucesso');
+		window.location.reload();
 	}
 
 	handleBoardNameChange(event) {
@@ -46,7 +43,6 @@ export class Board extends React.Component {
 	get() {
 		axios.get('http://127.0.0.1:3000/api/boards')
 			.then(res => {
-				console.log(res);
 				this.setState({ boards: res.data, isLoading: false });
 			})
 			.catch(error => {
@@ -56,7 +52,8 @@ export class Board extends React.Component {
 
 	handleChange = ({ target }) => {
         this.setState({
-            selectedOption: target.value,
+			selectedOption: target.value,
+			selectedOptionText : target.selectedOptions[0].text
         });
     }
 
@@ -82,9 +79,6 @@ export class Board extends React.Component {
 			'text-align': 'center',
 		}
 
-		const numbers = [...Array(100).keys()];
-
-
 		return (
 			<div style={container}>
 				<div style={box} >
@@ -106,13 +100,13 @@ export class Board extends React.Component {
 								value={this.state.selectedOption}
 								onChange={this.handleChange}
 								>
-								{this.state.boards.map(({ id, name }, index) => <option value={id} >{name}</option>)}
+								{this.state.boards.map(({ id, name }, index) => <option key={id} value={id} >{name}</option>)}
 								</select>
 							</div>
 						)
 						}
 						<br/>
-					 <Link to={'/kanban/'+this.state.selectedOption}>Go to {this.state.selectedOption} Board! </Link>
+					 <Link to={'/kanban/'+this.state.selectedOption}>Go to {this.state.selectedOptionText} Kanban! </Link>
 
 				</div>
 			</div>
