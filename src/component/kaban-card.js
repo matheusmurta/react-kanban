@@ -35,7 +35,7 @@ export class KanbanCard extends React.Component {
 			project_stage: targetTask.project_stage
 		}
 
-		axios.put('http://127.0.0.1:3000/api/tasks/' + targetTask.id, task)
+		axios.put('http://127.0.0.1:3001/api/tasks/' + targetTask.id, task)
 			.then(res => console.log(res.data));
 		Swal.fire({
 			icon: 'success',
@@ -68,7 +68,7 @@ export class KanbanCard extends React.Component {
 		}).then((result) => {
 			if (result.value) {
 
-				axios.delete('http://127.0.0.1:3000/api/tasks/' + task.id)
+				axios.delete('http://127.0.0.1:3001/api/tasks/' + task.id)
 					.then(res => console.log(res.data));
 
 				Swal.fire(

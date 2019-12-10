@@ -38,7 +38,7 @@ export class KanbanColumn extends React.Component {
 		let  url = window.location.pathname;
 		let  id = url.substring(url.lastIndexOf('/') + 1);
 
-		axios.post('http://127.0.0.1:3000/api/boards/'+  id +'/tasks', task)
+		axios.post('http://127.0.0.1:3001/api/boards/'+  id +'/tasks', task)
 			.then(res => console.log(res.data));
 
 			Swal.fire({  

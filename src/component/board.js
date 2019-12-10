@@ -26,7 +26,7 @@ export class Board extends React.Component {
 			name: this.state.boardName,
 		}
 
-		axios.post('http://127.0.0.1:3000/api/boards/', board)
+		axios.post('http://127.0.0.1:3001/api/boards/', board)
 			.then(res => console.log(res.data));
 		Swal.fire({
 			icon: 'success',
@@ -47,7 +47,7 @@ export class Board extends React.Component {
 	}
 
 	get() {
-		axios.get('http://127.0.0.1:3000/api/boards')
+		axios.get('http://127.0.0.1:3001/api/boards')
 			.then(res => {
 				this.setState({ boards: res.data, isLoading: false });
 			})

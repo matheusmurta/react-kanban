@@ -29,7 +29,7 @@ export class KanbanBoard  extends React.Component  {
 
 
 	get() {
-		axios.get('http://127.0.0.1:3000/api/tasks/listbyboard/'+ this.state.boardID )
+		axios.get('http://127.0.0.1:3001/api/tasks/listbyboard/'+ this.state.boardID )
 			.then(res => {
 				this.setState({ projects: res.data, isLoading: false });
 			})
@@ -63,7 +63,7 @@ export class KanbanBoard  extends React.Component  {
 			//alert('projeto'+project.id)
 			//alert('estou querendo ir para ' + this.state.draggedOverCol);
 			const project_stage = { project_stage: this.state.draggedOverCol }
-			axios.put('http://127.0.0.1:3000/api/tasks/'+ project.id, project_stage)
+			axios.put('http://127.0.0.1:3001/api/tasks/'+ project.id, project_stage)
 				.then(res => console.log(res.data));
 
 				const updatedProjects = this.state.projects.slice(0);

@@ -22,7 +22,7 @@ export class Kanban extends React.Component {
 	get() {
 		console.log(this.state.boardID);
 
-		axios.get('http://127.0.0.1:3000/api/boards/'+ this.state.boardID )
+		axios.get('http://127.0.0.1:3001/api/boards/'+ this.state.boardID )
 			.then(res => {
 				this.setState({ board: res.data[0].name, isLoading: false });
 			})
