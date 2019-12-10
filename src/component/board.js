@@ -1,6 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export class Board extends React.Component {
