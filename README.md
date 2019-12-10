@@ -17,7 +17,7 @@ npm i
 npm start 
 ```
 
-#### Please Visit this page to start the application
+#### Please Visit this page to start the application (will work only if started by this route)
 http://localhost:3000/Home
 
 ## See Quick Demo
