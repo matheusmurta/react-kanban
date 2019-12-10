@@ -4,7 +4,10 @@
 https://github.com/matheusmurta/node-kanban/blob/master/README.md
 
 #### Instructions
+
 ```sh
+
+//Clone this repository
 
 // Install the dependencies
 npm i 
