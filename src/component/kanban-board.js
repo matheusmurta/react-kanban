@@ -2,12 +2,17 @@ import React from "react";
 import axios from 'axios';
 import KanbanColumn from './kanban-column';
 
+export class KanbanBoard  extends React.Component  {
 
-export class KanbanBoard extends React.Component {
 	constructor(props) {
 		super(props);
+
+		let  url = window.location.pathname;
+		let  id = url.substring(url.lastIndexOf('/') + 1);
+
 		this.state = ({
-			isLoading: true,
+			boardID : id,
+			isLoading: false,
 			projects: [],
 			draggedOverCol: 0,
 		});
@@ -24,7 +29,7 @@ export class KanbanBoard extends React.Component {
 
 
 	get() {
-		axios.get('http://127.0.0.1:3000/api/tasks')
+		axios.get('http://127.0.0.1:3000/api/tasks/listbyboard/'+ this.state.boardID )
 			.then(res => {
 				this.setState({ projects: res.data, isLoading: false });
 
