@@ -2,7 +2,6 @@ import React from "react";
 import axios from 'axios';
 import Swal from "sweetalert2";
 
-
 export class KanbanCard extends React.Component {
 	constructor(props) {
 		super(props);
@@ -95,7 +94,7 @@ export class KanbanCard extends React.Component {
 			'paddingBottom': '5px',
 			'marginLeft': '0px',
 			'marginRight': '5px',
-			'marginBottom': '5px',
+			'marginBottom': '15px',
 			'borderRadius': '8px',
 			'boxShadow': '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 1px 8px rgba(0, 0, 0, 0.08)'
 		};
@@ -104,37 +103,36 @@ export class KanbanCard extends React.Component {
 			<div
 				style={cardStyle}
 				draggable={true}
-				onDragEnd={(e) => { this.props.onDragEnd(e, this.props.project); }}
-			>
+				onDragEnd={(e) => { this.props.onDragEnd(e, this.props.project); }}>
 				<br />
 
 				{!this.state.EditIsAtive && <div>
-					<button onClick={(e) => { this.delete(e, this.props.project) }}>Remove</button>
-					<button onClick={(e) => { this.ativeEdit(e) }}>Edit</button>
+					<button className="button button3" onClick={(e) => { this.delete(e, this.props.project) }}>Remove</button>
+					<button className="button button2" onClick={(e) => { this.ativeEdit(e) }}>Edit</button>
 				</div>}
 
 
-				{!this.state.EditIsAtive && <div><h4>  {this.props.project.name}</h4></div>}
+				{!this.state.EditIsAtive && <div><h4> <strong className="text-left">Name: </strong> {this.props.project.name}</h4></div>}
 				{(this.state.collapsed) ? null :
 					(<div>
 						{!this.state.EditIsAtive &&
-							<div>
-								<strong>Description: </strong><br />
-								<p>{this.props.project.name}</p>
-								<p>{this.props.project.description}</p>
+							<div >
+								<strong className="text-left">Description: </strong><br />
+								<div className="text-left">
+									<p>{this.props.project.name}</p>
+									<p>{this.props.project.description}</p>
+								</div>
 							</div>}
 
 						{this.state.EditIsAtive &&
 							<div>
 								<br />
-								<button onClick={(e) => { this.exitEdit(e) }}>Exit Edition</button>
+								<button className="button button3" onClick={(e) => { this.exitEdit(e) }}>Cancel Edition</button>
 								<input type="text" value={this.state.newName} onChange={this.handleChangeNewName} />
 								<textarea value={this.state.newDescription} onChange={this.handleChangeNewDescription} />
-								<button onClick={(e) => { this.update(e, this.props.project) }}>Update description</button>
+								<button className="button button1" onClick={(e) => { this.update(e, this.props.project) }}>Update description</button>
 
 							</div>}
-
-
 					</div>
 					)
 				}

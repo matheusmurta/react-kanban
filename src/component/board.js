@@ -1,9 +1,6 @@
 import React from "react";
 import axios from 'axios';
-import {
-	BrowserRouter as Router,
-	Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export class Board extends React.Component {
@@ -17,11 +14,9 @@ export class Board extends React.Component {
 			selectedOptionText: ''
 		});
 		this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
-
 	}
 
 	addBoard(event, column) {
-		//e.preventDefault();
 		const board = {
 			name: this.state.boardName,
 		}
@@ -63,9 +58,7 @@ export class Board extends React.Component {
 		});
 	}
 
-
 	render() {
-
 
 		const container = {
 			'display': 'flex',
@@ -79,11 +72,11 @@ export class Board extends React.Component {
 		const box = {
 			'background-color': 'white',
 			'width': '300px',
-			'height': '400px',
+			'height': '450px',
 			'boxShadow': '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 1px 8px rgba(0, 0, 0, 0.08)',
 			'margin': '10px',
 			'text-align': 'center',
-			'borderRadius':'10px'
+			'borderRadius': '10px'
 		}
 
 		return (
@@ -95,20 +88,17 @@ export class Board extends React.Component {
 					<input value={this.state.boardName} onChange={this.handleBoardNameChange} type="text" placeholder="Board Name"></input>
 					<br />
 					<br />
-					<button onClick={(e) => { this.addBoard(e, this.props.stage) }}>Add</button>
+					<button className="button button1" onClick={(e) => { this.addBoard(e, this.props.stage) }}>Add</button>
 					<br />
 					<h3>List of your Boards</h3>
 					<br />
-
 					{
 						(
 							<div>
 								<select
 									value={this.state.selectedOption}
-									onChange={this.handleChange}
-								>
-									        <option value="" disabled>Select a board...</option>
-
+									onChange={this.handleChange}>
+									<option value="" disabled>Select a board...</option>
 									{this.state.boards.map(({ id, name }, index) => <option key={id} value={id} >{name}</option>)}
 								</select>
 							</div>
@@ -120,7 +110,6 @@ export class Board extends React.Component {
 					</div>}
 				</div>
 			</div>
-
 		);
 	}
 }

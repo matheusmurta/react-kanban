@@ -2,16 +2,16 @@ import React from "react";
 import axios from 'axios';
 import KanbanColumn from './kanban-column';
 
-export class KanbanBoard  extends React.Component  {
+export class KanbanBoard extends React.Component {
 
 	constructor(props) {
 		super(props);
 
-		let  url = window.location.pathname;
-		let  id = url.substring(url.lastIndexOf('/') + 1);
+		let url = window.location.pathname;
+		let id = url.substring(url.lastIndexOf('/') + 1);
 
 		this.state = ({
-			boardID : id,
+			boardID: id,
 			isLoading: false,
 			projects: [],
 			draggedOverCol: 0,
@@ -29,7 +29,7 @@ export class KanbanBoard  extends React.Component  {
 
 
 	get() {
-		axios.get('http://127.0.0.1:3001/api/tasks/listbyboard/'+ this.state.boardID )
+		axios.get('http://127.0.0.1:3001/api/tasks/listbyboard/' + this.state.boardID)
 			.then(res => {
 				this.setState({ projects: res.data, isLoading: false });
 			})
@@ -42,36 +42,22 @@ export class KanbanBoard  extends React.Component  {
 		this.get();
 	}
 
-	// é chamado quando um cartão Kanban é arrastado sobre uma coluna (chamada por coluna)
+	// is called when a kanban card is dragged over a column (called per column)
 	handleOnDragEnter(e, stageValue) {
-		//acomapnha o valor da coluna que ele quer 
-		console.log(stageValue);
 		this.setState({ draggedOverCol: stageValue });
 	}
 
-	// é chamado quando um cartão Kanban cai sobre uma coluna (chamado por cartão)
+	// is called when a kanban card falls on a column (called by card)
 	handleOnDragEnd(e, project) {
-		//Atualizar no branco 
-		//pegar o valor do column
-		//atualiza no state 
-		console.log("desc do projeto jogado", project);
-		console.log(project.project_stage != this.state.draggedOverCol);
-		console.log("nome da coluna que ele jogou " + this.state.draggedOverCol);
-		if( project.project_stage != this.state.draggedOverCol)
-		{
-			//alert('estava na '+project.project_stage)
-			//alert('projeto'+project.id)
-			//alert('estou querendo ir para ' + this.state.draggedOverCol);
+		if (project.project_stage != this.state.draggedOverCol) {
 			const project_stage = { project_stage: this.state.draggedOverCol }
-			axios.put('http://127.0.0.1:3001/api/tasks/'+ project.id, project_stage)
+			axios.put('http://127.0.0.1:3001/api/tasks/' + project.id, project_stage)
 				.then(res => console.log(res.data));
 
-				const updatedProjects = this.state.projects.slice(0);
-				updatedProjects.find((projectObject) => { return projectObject.name === project.name; }).project_stage = this.state.draggedOverCol;
-				this.setState({ projects: updatedProjects });
+			const updatedProjects = this.state.projects.slice(0);
+			updatedProjects.find((projectObject) => { return projectObject.name === project.name; }).project_stage = this.state.draggedOverCol;
+			this.setState({ projects: updatedProjects });
 		}
-	
-	
 	}
 
 	render() {
@@ -99,4 +85,4 @@ export class KanbanBoard  extends React.Component  {
 }
 
 
-  export default KanbanBoard;
+export default KanbanBoard;

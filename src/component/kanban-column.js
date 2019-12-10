@@ -1,9 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import KanbanCard from './kaban-card';
-import Swal from "sweetalert2";  
-
-
+import Swal from "sweetalert2";
 
 
 export class KanbanColumn extends React.Component {
@@ -28,28 +26,27 @@ export class KanbanColumn extends React.Component {
 
 
 	addTask(event, column) {
-		//e.preventDefault();
 		const task = {
 			name: this.state.name,
 			description: this.state.description,
 			project_stage: column,
 		}
 
-		let  url = window.location.pathname;
-		let  id = url.substring(url.lastIndexOf('/') + 1);
+		let url = window.location.pathname;
+		let id = url.substring(url.lastIndexOf('/') + 1);
 
-		axios.post('http://127.0.0.1:3001/api/boards/'+  id +'/tasks', task)
+		axios.post('http://127.0.0.1:3001/api/boards/' + id + '/tasks', task)
 			.then(res => console.log(res.data));
 
-			Swal.fire({  
-				icon: 'success',
-				title: 'Success',  
-				type: 'success',  
-				text: 'Operation completed successfully.',  
-			}).then(() => {
-			    window.location.reload();
-			  })  
-		
+		Swal.fire({
+			icon: 'success',
+			title: 'Success',
+			type: 'success',
+			text: 'Operation completed successfully.',
+		}).then(() => {
+			window.location.reload();
+		})
+
 	}
 
 	generateKanbanCards() {
@@ -81,13 +78,16 @@ export class KanbanColumn extends React.Component {
 		const columnStyle = {
 			'display': 'inline-block',
 			'verticalAlign': 'top',
-			'marginRight': '5px',
+			'marginRight': '10px',
+			'marginLeft': '10px',
 			'marginBottom': '5px',
 			'width': '230px',
 			'textAlign': 'center',
 			'borderRadius': '10px',
 			'padding': '10px',
-			'backgroundColor': this.setColor(),
+			'backgroundColor': '#f6f8fc',
+			'boxShadow': '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 1px 8px rgba(0, 0, 0, 0.08)',
+			'border-top': '10px solid' + this.setColor(),
 		};
 		return (
 			<div
@@ -96,17 +96,17 @@ export class KanbanColumn extends React.Component {
 				onDragExit={(e) => { this.setState({ mouseIsHovering: false }); }}
 			>
 				<h4>{this.props.stage}. {this.props.name} ({this.props.projects.length})</h4>
-				
+
 
 				{this.generateKanbanCards()}
 				<br />
-				<button onClick={(e) => { this.addTask(e, this.props.stage) }}>Add</button><br />
-				<input  value={this.state.name} onChange={this.handleNameChange} type="text" placeholder="name"></input>
-				<input  value={this.state.description} onChange={this.handleDescriptionChange} type="text" placeholder="description"></input>
+				<button className="button button1" onClick={(e) => { this.addTask(e, this.props.stage) }}>Add</button><br />
+				<input value={this.state.name} onChange={this.handleNameChange} type="text" placeholder="Name"></input>
+				<input value={this.state.description} onChange={this.handleDescriptionChange} type="text" placeholder="Description"></input>
 			</div>
 		);
 	}
 }
 
 
-  export default KanbanColumn;
+export default KanbanColumn;
