@@ -5,38 +5,53 @@ export class KanbanCard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			collapsed: true,
-			showMe: false
+			collapsed: false,
+			showMe: false,
+			newName: '',
+			newDescription: '',
+			EditIsAtive: false
 		};
 
-		this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+		this.handleChangeNewName = this.handleChangeNewName.bind(this);
+		this.handleChangeNewDescription = this.handleChangeNewDescription.bind(this);
 	}
 
-	handleDescriptionChange(event) {
-		this.setState({ description: event.target.value });
+	handleChangeNewName(event) {
+	this.setState({newName: event.target.value});
+	}
+
+	handleChangeNewDescription(event) {
+	this.setState({newDescription: event.target.value});
 	}
 
 
-	update(e, data) {
+	update(e, targetTask) {
 
-		//axios.put('http://127.0.0.1:3000/api/tasks/'+ data.id, data)
-		//	.then(res => console.log(res.data));
+		const task = {
+			name: this.state.newName,
+			description: this.state.newDescription,
+			project_stage: targetTask.project_stage
+		}
 
-
-		//tem que dar update da descricao
-		//e atualizar no dom 
-		console.log(data.id);
-		console.log(data);
-		alert('update!');
-	//	window.location.reload();
+		axios.put('http://127.0.0.1:3000/api/tasks/'+ targetTask.id, task)
+		 .then(res => console.log(res.data));
+		alert('Operação concluida com sucesso!');
+	     window.location.reload();
 	}
 
+	ativeEdit(event, task) {
+		this.setState({EditIsAtive: true,  newName: this.props.project.name, newDescription: this.props.project.description });
+	}
+
+	exitEdit(event){
+		this.setState({EditIsAtive: false});
+	}
 
 	delete(event, task) {
 		axios.delete('http://127.0.0.1:3000/api/tasks/'+ task.id )
 			.then(res => console.log(res.data));
 
-		console.log(task.id);
+			alert('Operação concluida com sucesso!');
 		window.location.reload();
 
 	}
@@ -62,21 +77,34 @@ export class KanbanCard extends React.Component {
 				onDragEnd={(e) => { this.props.onDragEnd(e, this.props.project); }}
 			>
 				<br />
+
+				{!this.state.EditIsAtive && <div>
 				<button onClick={(e) => { this.delete(e, this.props.project) }}>Remove</button>
+				<button onClick={(e) => { this.ativeEdit(e) }}>Edit</button>
+                </div>}
+				
 		
-				<div><h4>{this.props.project.name}</h4></div>
+				{!this.state.EditIsAtive && <div><h4>  {this.props.project.name}</h4></div>}
 				{(this.state.collapsed) ? null: 
-				(<div><strong>Description: </strong><br />
-					
-				<textarea 
-				type="text" 
-				name="payloadBox" 
-				placeholder="Enter payload here..."
-				onChange={this.handleDescriptionChange}
-				value={ this.props.project.description } 
-				/>
-	  			<br/>	
-	  			<button onClick={(e) => { this.update(e, this.props.project) }}>Update description</button>
+				(<div>
+					{!this.state.EditIsAtive && 
+					   <div>
+						<strong>Description: </strong><br />
+						<p>{this.props.project.name}</p> 
+						<p>{this.props.project.description}</p>
+						</div>}
+
+					{this.state.EditIsAtive && 
+					<div>
+						<br/>
+						<button onClick={(e) => { this.exitEdit(e) }}>Exit Edition</button>
+						<input type="text" value={this.state.newName} onChange={this.handleChangeNewName} />
+						<textarea value={this.state.newDescription} onChange={this.handleChangeNewDescription} />
+						<button onClick={(e) => { this.update(e, this.props.project) }}>Update description</button>
+
+					</div>}
+
+				
 				</div>
 					)
 				}
