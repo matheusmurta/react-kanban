@@ -1,17 +1,17 @@
 # react-kanban 
 
-#### Para que a aplicaçaõ funcione corretamente e necessario rodar o projeto back end
+#### For the application to work correctly, you must run the project backend
 https://github.com/matheusmurta/node-kanban/blob/master/README.md
 
-#### Instruções
+#### Instructions
 ```sh
 
-//Instale as dependencias
+// Install the dependencies
 npm i 
 
-//Inicie o projeto 
+// Start the project
 npm start 
 ```
 
-#### Acesse a pagina para iniciar a aplicação 
+#### Please Visit this page to start the application
 http://localhost:3000/Home
