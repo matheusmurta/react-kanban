@@ -7,22 +7,20 @@ export class Kanban extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let  url = window.location.pathname;
-		let  id = url.substring(url.lastIndexOf('/') + 1);
+		let url = window.location.pathname;
+		let id = url.substring(url.lastIndexOf('/') + 1);
 
 		this.state = ({
-			boardID : id,
+			boardID: id,
 			board: []
 		});
-		
-	}
 
-	
+	}
 
 	get() {
 		console.log(this.state.boardID);
 
-		axios.get('http://127.0.0.1:3001/api/boards/'+ this.state.boardID )
+		axios.get('http://127.0.0.1:3001/api/boards/' + this.state.boardID)
 			.then(res => {
 				this.setState({ board: res.data[0].name, isLoading: false });
 			})
@@ -35,15 +33,13 @@ export class Kanban extends React.Component {
 		this.get();
 	}
 
-	
+
 	render() {
 
 		const style = {
 			'padding': '30px',
 			'paddingTop': '5px',
 		};
-
-		
 
 		return (
 			<div style={style}>
@@ -54,4 +50,4 @@ export class Kanban extends React.Component {
 	}
 }
 
-  export default Kanban;
+export default Kanban;
