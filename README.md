@@ -8,6 +8,7 @@ https://github.com/matheusmurta/node-kanban/blob/master/README.md
 ```sh
 
 //Clone this repository
+git clone https://github.com/matheusmurta/react-kanban.git
 
 // Install the dependencies
 npm i 
