@@ -1,6 +1,6 @@
 # react-kanban 
 
-#### For the application to work correctly, you must run the project backend
+#### For the application to work correctly, you must run the backend project 
 https://github.com/matheusmurta/node-kanban/blob/master/README.md
 
 #### Instructions
