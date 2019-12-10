@@ -1,6 +1,9 @@
 import React from "react";
 import axios from 'axios';
 import KanbanCard from './kaban-card';
+import Swal from "sweetalert2";  
+
+
 
 
 export class KanbanColumn extends React.Component {
@@ -37,8 +40,16 @@ export class KanbanColumn extends React.Component {
 
 		axios.post('http://127.0.0.1:3000/api/boards/'+  id +'/tasks', task)
 			.then(res => console.log(res.data));
+
+			Swal.fire({  
+				icon: 'success',
+				title: 'Success',  
+				type: 'success',  
+				text: 'Operation completed successfully.',  
+			}).then(() => {
+			    window.location.reload();
+			  })  
 		
-		window.location.reload();
 	}
 
 	generateKanbanCards() {

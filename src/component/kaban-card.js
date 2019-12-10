@@ -1,5 +1,7 @@
 import React from "react";
 import axios from 'axios';
+import Swal from "sweetalert2";
+
 
 export class KanbanCard extends React.Component {
 	constructor(props) {
@@ -17,11 +19,11 @@ export class KanbanCard extends React.Component {
 	}
 
 	handleChangeNewName(event) {
-	this.setState({newName: event.target.value});
+		this.setState({ newName: event.target.value });
 	}
 
 	handleChangeNewDescription(event) {
-	this.setState({newDescription: event.target.value});
+		this.setState({ newDescription: event.target.value });
 	}
 
 
@@ -33,26 +35,54 @@ export class KanbanCard extends React.Component {
 			project_stage: targetTask.project_stage
 		}
 
-		axios.put('http://127.0.0.1:3000/api/tasks/'+ targetTask.id, task)
-		 .then(res => console.log(res.data));
-		alert('Operação concluida com sucesso!');
-	     window.location.reload();
+		axios.put('http://127.0.0.1:3000/api/tasks/' + targetTask.id, task)
+			.then(res => console.log(res.data));
+		Swal.fire({
+			icon: 'success',
+			title: 'Success',
+			type: 'success',
+			text: 'Operation completed successfully.',
+		}).then(() => {
+			window.location.reload();
+		})
 	}
 
 	ativeEdit(event, task) {
-		this.setState({EditIsAtive: true,  newName: this.props.project.name, newDescription: this.props.project.description });
+		this.setState({ EditIsAtive: true, newName: this.props.project.name, newDescription: this.props.project.description });
 	}
 
-	exitEdit(event){
-		this.setState({EditIsAtive: false});
+	exitEdit(event) {
+		this.setState({ EditIsAtive: false });
 	}
 
 	delete(event, task) {
-		axios.delete('http://127.0.0.1:3000/api/tasks/'+ task.id )
-			.then(res => console.log(res.data));
 
-			alert('Operação concluida com sucesso!');
-		window.location.reload();
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+			if (result.value) {
+
+				axios.delete('http://127.0.0.1:3000/api/tasks/' + task.id)
+					.then(res => console.log(res.data));
+
+				Swal.fire(
+					'Deleted!',
+					'Your file has been deleted.',
+					'success'
+				)
+
+				setTimeout(() =>
+					window.location.reload()
+					, 1000);
+			}
+		})
+
 
 	}
 
@@ -79,33 +109,33 @@ export class KanbanCard extends React.Component {
 				<br />
 
 				{!this.state.EditIsAtive && <div>
-				<button onClick={(e) => { this.delete(e, this.props.project) }}>Remove</button>
-				<button onClick={(e) => { this.ativeEdit(e) }}>Edit</button>
-                </div>}
-				
-		
+					<button onClick={(e) => { this.delete(e, this.props.project) }}>Remove</button>
+					<button onClick={(e) => { this.ativeEdit(e) }}>Edit</button>
+				</div>}
+
+
 				{!this.state.EditIsAtive && <div><h4>  {this.props.project.name}</h4></div>}
-				{(this.state.collapsed) ? null: 
-				(<div>
-					{!this.state.EditIsAtive && 
-					   <div>
-						<strong>Description: </strong><br />
-						<p>{this.props.project.name}</p> 
-						<p>{this.props.project.description}</p>
-						</div>}
+				{(this.state.collapsed) ? null :
+					(<div>
+						{!this.state.EditIsAtive &&
+							<div>
+								<strong>Description: </strong><br />
+								<p>{this.props.project.name}</p>
+								<p>{this.props.project.description}</p>
+							</div>}
 
-					{this.state.EditIsAtive && 
-					<div>
-						<br/>
-						<button onClick={(e) => { this.exitEdit(e) }}>Exit Edition</button>
-						<input type="text" value={this.state.newName} onChange={this.handleChangeNewName} />
-						<textarea value={this.state.newDescription} onChange={this.handleChangeNewDescription} />
-						<button onClick={(e) => { this.update(e, this.props.project) }}>Update description</button>
+						{this.state.EditIsAtive &&
+							<div>
+								<br />
+								<button onClick={(e) => { this.exitEdit(e) }}>Exit Edition</button>
+								<input type="text" value={this.state.newName} onChange={this.handleChangeNewName} />
+								<textarea value={this.state.newDescription} onChange={this.handleChangeNewDescription} />
+								<button onClick={(e) => { this.update(e, this.props.project) }}>Update description</button>
 
-					</div>}
+							</div>}
 
-				
-				</div>
+
+					</div>
 					)
 				}
 				<div
@@ -119,4 +149,4 @@ export class KanbanCard extends React.Component {
 	}
 }
 
-  export default KanbanCard;
+export default KanbanCard;

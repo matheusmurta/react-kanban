@@ -3,8 +3,8 @@ import axios from 'axios';
 import {
 	BrowserRouter as Router,
 	Link
-  } from "react-router-dom";
-
+} from "react-router-dom";
+import Swal from "sweetalert2";
 
 export class Board extends React.Component {
 
@@ -14,7 +14,7 @@ export class Board extends React.Component {
 			boards: [],
 			selectedOption: '',
 			boardName: '',
-			selectedOptionText:''
+			selectedOptionText: ''
 		});
 		this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
 
@@ -28,8 +28,14 @@ export class Board extends React.Component {
 
 		axios.post('http://127.0.0.1:3000/api/boards/', board)
 			.then(res => console.log(res.data));
-		alert('salvo com sucesso');
-		window.location.reload();
+		Swal.fire({
+			icon: 'success',
+			title: 'Success',
+			type: 'success',
+			text: 'Operation completed successfully.',
+		}).then(() => {
+			window.location.reload();
+		})
 	}
 
 	handleBoardNameChange(event) {
@@ -51,11 +57,11 @@ export class Board extends React.Component {
 	}
 
 	handleChange = ({ target }) => {
-        this.setState({
+		this.setState({
 			selectedOption: target.value,
-			selectedOptionText : target.selectedOptions[0].text
-        });
-    }
+			selectedOptionText: target.selectedOptions[0].text
+		});
+	}
 
 
 	render() {
@@ -63,8 +69,8 @@ export class Board extends React.Component {
 
 		const container = {
 			'display': 'flex',
-			'justify-content':'center',
-			'align-items':'center',
+			'justify-content': 'center',
+			'align-items': 'center',
 			'height': '100%',
 			'background-color': '#e4f1fe',
 			'padding': '30px'
@@ -77,42 +83,46 @@ export class Board extends React.Component {
 			'boxShadow': '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 1px 8px rgba(0, 0, 0, 0.08)',
 			'margin': '10px',
 			'text-align': 'center',
+			'borderRadius':'10px'
 		}
 
 		return (
 			<div style={container}>
 				<div style={box} >
-				<h2>Board Selection</h2>
+					<h2>Board Selection</h2>
 
 					<h3>Create a new board </h3>
-					<input value={this.state.boardName} onChange={this.handleBoardNameChange} type="text"  placeholder="Board Name"></input>
-					<br/>
-					<br/>
+					<input value={this.state.boardName} onChange={this.handleBoardNameChange} type="text" placeholder="Board Name"></input>
+					<br />
+					<br />
 					<button onClick={(e) => { this.addBoard(e, this.props.stage) }}>Add</button>
-					<br/>
+					<br />
 					<h3>List of your Boards</h3>
-					<br/>
-					
-						{
-						  (
+					<br />
+
+					{
+						(
 							<div>
 								<select
-								value={this.state.selectedOption}
-								onChange={this.handleChange}
+									value={this.state.selectedOption}
+									onChange={this.handleChange}
 								>
-								{this.state.boards.map(({ id, name }, index) => <option key={id} value={id} >{name}</option>)}
+									        <option value="" disabled>Select a board...</option>
+
+									{this.state.boards.map(({ id, name }, index) => <option key={id} value={id} >{name}</option>)}
 								</select>
 							</div>
 						)
-						}
-						<br/>
-					 <Link to={'/kanban/'+this.state.selectedOption}>Go to {this.state.selectedOptionText} Kanban! </Link>
-
+					}
+					<br />
+					{this.state.selectedOptionText && <div>
+						<Link to={'/kanban/' + this.state.selectedOption}>Go to {this.state.selectedOptionText} Kanban! </Link>
+					</div>}
 				</div>
 			</div>
-			
+
 		);
 	}
 }
 
-  export default Board;
+export default Board;
