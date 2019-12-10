@@ -20,6 +20,8 @@ npm start
 #### Please Visit this page to start the application
 http://localhost:3000/Home
 
-## Quick Demo
+## See Quick Demo
+
 https://gfycat.com/anydifficultgrayreefshark
+
 https://gfycat.com/sphericalbruisedfirebelliedtoad
