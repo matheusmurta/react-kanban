@@ -25,3 +25,5 @@ http://localhost:3000/Home
 https://gfycat.com/anydifficultgrayreefshark
 
 https://gfycat.com/sphericalbruisedfirebelliedtoad
+
+i am aware of what needs to be improved check my remarks at issues
